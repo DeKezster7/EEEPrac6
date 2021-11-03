@@ -7,9 +7,10 @@
 
 // Code your design here
 `timescale 1ns / 1ps
-include RegMem.sv;
-include alu.sv;
-include CU.sv;
+
+`include "alu.v"
+`include "CU.v"
+`include "RegMem.v"   
 
 module simple_cpu( clk, rst, instruction );
 
@@ -60,41 +61,4 @@ module simple_cpu( clk, rst, instruction );
     assign result2_i = (sel1_i == 0) ? data_out_i : (sel1_i == 1) ? result1_i : 8'bx;  
     
 
-    
-    
-    
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 endmodule
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

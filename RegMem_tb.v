@@ -1,8 +1,3 @@
-/*
-* Practical 6 - EEE3095S/96s
-* Takudzwa Clinton Mabika MBKTAK003
-* Akhtar Patel PTLAKH001
-*/
 `timescale 1ns / 1ps
 
 module tb_reg_mem;

@@ -3,6 +3,8 @@
 * Takudzwa Clinton Mabika MBKTAK003
 * Akhtar Patel PTLAKH001
 */
+`timescale 1ns / 1ps
+
 module alu( clk, operand_a, operand_b, opcode, result);
     parameter DATA_WIDTH = 8;
 

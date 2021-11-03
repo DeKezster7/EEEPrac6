@@ -29,7 +29,7 @@ module CU (clk,rst, instr, result2, operand1, operand2, offset, opcode, sel1, se
     //STATES
     parameter RESET = 4'b0000;
     parameter DECODE = 4'b0001;
-    parameter EXECUTE = 4'b0010;
+    parameter EXECUTE = 4'b0010; 
     parameter MEM_ACCESS = 4'b0100;
     parameter WRITE_BACK = 4'b1000;
         
@@ -81,19 +81,15 @@ module CU (clk,rst, instr, result2, operand1, operand2, offset, opcode, sel1, se
                     sel1 <= 0; //pass data_out
                     sel3 <= 1; //pass offset
                     w_r <= 0;
-                end else if (instruction[19:18] == 2'b11) begin //storeR 
-                   /******************************************** 
-                   *
-                   * FILL IN CORRECT CODE HERE
-                   *
-                   ********************************************/ 
-                  	regfile[instruction[15:14]] <= operand1; //X2
-                  	regfile[instruction[17:16]] <= operand2; //z
+                end else if (instruction[19:18] == 2'b11) 
+                  begin 
+                    operand1 <= regfile[instruction[15:14]]; //X2
+                    operand2 <= regfile[instruction[17:16]]; //X1
                     offset <= instruction[11:4];
                     opcode <= instruction[3:0];
-                    sel1 <= 1; //pass data_out
-                    sel3 <= 1; //pass offset
-                    w_r <= 1;
+                    sel1 <= 0; //data_out
+                    sel3 <= 1; //offset
+                    w_r <= 0; //memaccess
                 end
             end
             EXECUTE: begin //#2
@@ -117,17 +113,12 @@ module CU (clk,rst, instr, result2, operand1, operand2, offset, opcode, sel1, se
                     sel3 <= 1; //pass offset
                     w_r <= 0;
                 end else if (instruction[19:18] == 2'b11) begin //storeR
-                   /******************************************** 
-                   *
-                   * FILL IN CORRECT CODE HERE
-                   *
-                   ********************************************/ 
-                  regfile[instruction[15:14]] <= operand1; //X2
-                  regfile[instruction[17:16]] <= operand2; //z
+                   	operand1 <= regfile[instruction[15:14]]; 
+                    operand2 <= regfile[instruction[17:16]];
                     offset <= instruction[11:4];
                     opcode <= instruction[3:0];
-                    sel1 <= 1; //pass data_out
-                    sel3 <= 1; //pass offset
+                    sel1 <= 0;
+                    sel3 <= 1;
                     w_r <= 1;
                 end
             end
@@ -142,21 +133,14 @@ module CU (clk,rst, instr, result2, operand1, operand2, offset, opcode, sel1, se
                     sel3 <= 1; //pass offset
                     w_r <= 0;
                 end else if (instruction[19:18] == 2'b11) begin //storeR 
-                   /******************************************** 
-                   *
-                   * FILL IN CORRECT CODE HERE
-                   * Take note of what the next state should be according to
-                   * the FSM
-                   *
-                   ********************************************/ 
-                  	state = DECODE;
-                  regfile[instruction[15:14]] <= operand1; //X2
-                  regfile[instruction[17:16]] <= operand2; //z
-                    offset <= instruction[11:4];
+                   	state = DECODE; //state
+                  	operand1 <= regfile[instruction[15:14]]; //X2
+                  operand2 <= regfile[instruction[17:16]]; //X1
+                  	offset <= instruction[11:4];
                     opcode <= instruction[3:0];
-                    sel1 <= 1; //pass data_out
-                    sel3 <= 1; //pass offset
-                    w_r <= 1;
+                    sel1 <= 0; //data_out
+                    sel3 <= 1; //offset
+                    w_r <= 0; //memaccess 
                 end
             end
             WRITE_BACK: begin //#4
@@ -172,21 +156,23 @@ module CU (clk,rst, instr, result2, operand1, operand2, offset, opcode, sel1, se
                     sel3 <= 0;
                     w_r <= 0;
                 end else if (instruction[19:18] == 2'b11) begin //storeR 
-                   /******************************************** 
-                   *
-                   * FILL IN CORRECT CODE HERE
-                   *
-                   ********************************************/ 
+                   	operand1 <= regfile[instruction[15:14]]; //X2
+                    operand2 <= regfile[instruction[17:16]]; //X1
+                    offset <= instruction[11:4];
+                    opcode <= instruction[3:0];
+                    sel1 <= 0; //data_out
+                    sel3 <= 1; //offset
+                    w_r <= 1; //memaccess
                     
                 end else if (instruction[19:18] == 2'b10) begin //loadR             
                     regfile[instruction[17:16]] <= result2; //From data mem
-                  regfile[instruction[15:14]] <= operand1; //X2
-                  regfile[instruction[17:16]] <= operand2; //z
+                    operand1 <= regfile[instruction[15:14]]; //X2
+                    operand2 <= regfile[instruction[17:16]]; //z
                     offset <= instruction[11:4];
                     opcode <= instruction[3:0];
-                    sel1 <= 1; //pass data_out
+                    sel1 <= 0; //pass data_out
                     sel3 <= 1; //pass offset
-                    w_r <= 1;
+                    w_r <= 0;
                 end
             end
 

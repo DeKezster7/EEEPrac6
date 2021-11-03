@@ -20,6 +20,9 @@ module tb_simple_CPU;
     simple_cpu  #(DATA_WIDTH,ADDR_BITS,INSTR_WIDTH) SCPU_DUT(clk, rst, instruction);
     
     initial begin
+      $dumpfile("dump.vcd");
+      $dumpvars(0, tb_simple_CPU);
+      
         clk = 1'b1;
         rst = 1'b1;
         instruction = 20'd0;
@@ -53,7 +56,7 @@ module tb_simple_CPU;
         instruction = 20'b11011000000011110000;
         repeat(6) #1 clk=!clk;
         
-                                           //STORE_R:   DATA_MEM(reg3 + 22) = reg0  //DATA_MEM(2+22)= 4  
+                                           //STORE_R:   DATA_MEM(reg3 + 20) = reg0  //DATA_MEM(2+20)= 4  
         //In the instruction this is:    (instr)                 (X2)         (X1)
         instruction = 20'b11001100000101100000;
         repeat(6) #1 clk=!clk;
@@ -63,11 +66,7 @@ module tb_simple_CPU;
         instruction = 20'b10111000000011110000;
         repeat(7) #1 clk=!clk;
         
-      	instruction = 20'b10111000000011110000;
-      	repeat(7) #1 clk=!clk;
         
-          
-      
     end
     
     
